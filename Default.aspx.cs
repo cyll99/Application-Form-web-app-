@@ -13,5 +13,20 @@ namespace Etudiant
         {
 
         }
+
+        protected void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void TextBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void ListView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
