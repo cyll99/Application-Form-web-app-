@@ -19,10 +19,10 @@ namespace Etudiant
 
         public static void CreateIfNotExists()
         {
-            using (IDbConnection cnn = new SqliteConnection("Data Source=./films.db;Version=3"))
+            using (IDbConnection cnn = new SqliteConnection("Data Source=./personnes.db;Version=3"))
             {
 
-                var query = "CREATE TABLE IF NOT EXISTS offline ( id INTEGER, title CHAR(50), image BLOB, release_date TEXT, original_language TEXT,  vote_count INTEGER, vote_average REAL, popularity REAL, overview	TEXT)";
+                var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom1 TEXT, prenom2 TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
 
                 cnn.Execute(query, new DynamicParameters());
             }
@@ -33,10 +33,10 @@ namespace Etudiant
         /// <returns> List of films</returns>
         public static List<Personne> LoadFilms()
         {
-            List<Personne> films = new List<Personne>();
-            using (SQLiteConnection cnn = new SQLiteConnection("Data Source=./films.db;Version=3"))
+            List<Personne> personnes = new List<Personne>();
+            using (SQLiteConnection cnn = new SQLiteConnection("Data Source=./personnes.db;Version=3"))
             {
-                var query = "select * from offline";
+                var query = "select * from infos";
                 cnn.Open();
 
                 SQLiteCommand sQLiteCommand = new SQLiteCommand(query, cnn);
@@ -46,24 +46,28 @@ namespace Etudiant
                     
                     while (sQLiteDataReader.Read())
                     {
-                        Film film = new Film();
-                        film.title = (string)sQLiteDataReader["title"];
-                        film.release_date = (string)sQLiteDataReader["release_date"];
-                        film.original_language = (string)sQLiteDataReader["original_language"];
-                        film.vote_count = Convert.ToInt32(sQLiteDataReader["vote_count"]);
-                        film.overview = (string)sQLiteDataReader["overview"];
-                        film.popularity = Convert.ToInt32(sQLiteDataReader["popularity"]);
-                        film.vote_average = Convert.ToInt32(sQLiteDataReader["vote_average"]);
-                        byte[] image_byte = (byte[])sQLiteDataReader["image"];
+                        //Personne personne = new Personne();
+                        var nom = (string)sQLiteDataReader["nom"];
+                        var prenom1 = (string)sQLiteDataReader["prenom1"];
+                        var prenom2 = (string)sQLiteDataReader["prenom2"];
+                        var age = Convert.ToInt32(sQLiteDataReader["age"]);
+                        var telephone = (string)sQLiteDataReader["telephone"];
+                        var pays = (string)sQLiteDataReader["pays"];
+                        var ville = (string)sQLiteDataReader["ville"];
+                        var nationalite = (string)sQLiteDataReader["nationalite"];
+                        var adresse = (string)sQLiteDataReader["adresse"];
+                        var date = (string)sQLiteDataReader["date"];
 
-                        Image newImage = byteArrayToImage(image_byte);
+                        Personne personne = new Personne(nom, prenom1, prenom2, age, nationalite, adresse, ville, pays, telephone, date);
 
-                        film.image = newImage;
-                        films.Add(film);
+                        
+
+                        
+                        personnes.Add(personne);
                     }
                 }
 
-                return films;
+                return personnes;
             }
 
         }
@@ -72,43 +76,45 @@ namespace Etudiant
         /// Insert film in local database
         /// </summary>
         /// <param name="film"></param>
-        public static void SaveFilm(Film film)
+        public static void SaveFilm(Personne personne)
         {
-            using (SQLiteConnection cnn = new SQLiteConnection("Data Source=./films.db;Version=3"))
+            using (SQLiteConnection cnn = new SQLiteConnection("Data Source=./personnes.db;Version=3"))
             {
                 cnn.Open();
 
               
-                var backdrop = "https://image.tmdb.org/t/p/w342" + film.backdrop_path;
-           
-                byte[] pic = ImageToByte(backdrop, System.Drawing.Imaging.ImageFormat.Jpeg);
+              
                 string sql = @"
-                        insert into offline (title, overview, image, release_date, vote_count,id,original_language,vote_average,popularity)
-                        Select @title , @overview, @pic, @release_date,@vote_count, @id, @original_language,@vote_average,@popularity
+                        insert into offline (nom, prenom1, prenom2, age, nationalite, adresse, ville, pays, telephone, date)
+                        Select @nom , @prenom1, @prenom2, @age, @nationalite, @adresse, @ville,@pays,@telephone,@date
                         Where not exists (
                             select * 
                             from offline 
                             where 
-                                id = @id
-                            and overview = @overview
-                            and image = @pic
-                            and release_date = @release_date
-                            and original_language = @original_language
-                            and title = @title
-                            and vote_count = @vote_count
+                                nom = @nom
+                            and prenom1 = @prenom1
+                            and prenom2 = @prenom2
+                            and age = @age
+                            and nationalite = @nationalite
+                            and adresse = @adresse
+                            and ville = @ville
+                            and pays = @pays
+                            and telephone = @telephone
+                            and date = @date
 )
                         ";
                 using ( var cmd = new SQLiteCommand(sql, cnn))
                 {
-                    cmd.Parameters.AddWithValue("@title", film.title);
-                    cmd.Parameters.AddWithValue("@overview", film.overview);
-                    cmd.Parameters.AddWithValue("@pic", pic);
-                    cmd.Parameters.AddWithValue("@release_date", film.release_date);
-                    cmd.Parameters.AddWithValue("@vote_count", film.vote_count);
-                    cmd.Parameters.AddWithValue("@id", film.id);
-                    cmd.Parameters.AddWithValue("@original_language", film.original_language);
-                    cmd.Parameters.AddWithValue("@vote_average", film.vote_average);
-                    cmd.Parameters.AddWithValue("@popularity", film.popularity);
+                    cmd.Parameters.AddWithValue("@nom", personne.Nom);
+                    cmd.Parameters.AddWithValue("@prenom1", personne.Prenom1);
+                    cmd.Parameters.AddWithValue("@prenom2", personne.Prenom2);
+                    cmd.Parameters.AddWithValue("@age", personne.Age);
+                    cmd.Parameters.AddWithValue("@nationalite", personne.Nationalite);
+                    cmd.Parameters.AddWithValue("@adresse", personne.AdresseRue);
+                    cmd.Parameters.AddWithValue("@ville", personne.Ville);
+                    cmd.Parameters.AddWithValue("@pays", personne.Pays);
+                    cmd.Parameters.AddWithValue("@telephone", personne.Telephone);
+                    cmd.Parameters.AddWithValue("@date", personne.DateCree);
                     cmd.ExecuteNonQuery();
          
                 }
@@ -118,43 +124,7 @@ namespace Etudiant
         }
 
 
-        /// <summary>
-        /// convert image from uri to byte
-        /// </summary>
-        /// <param name="backdrop"></param>
-        /// <param name="format"></param>
-        /// <returns>a list of byte</returns>
-        public static byte[] ImageToByte(string backdrop, System.Drawing.Imaging.ImageFormat format)
-        {
-            WebClient client = new WebClient();
-            Stream stream = client.OpenRead(backdrop);
-            // Bitmap bitmap; 
-            Image bitmap = new Bitmap(Image.FromStream(stream));
-
-            using (MemoryStream ms = new MemoryStream())
-            {
-                // Convert Image to byte[]
-                bitmap.Save(ms, format);
-                byte[] imageBytes = ms.ToArray();
-                return imageBytes;
-            }
-          
-        }
-
-        /// <summary>
-        /// convert byte to image
-        /// </summary>
-        /// <param name="bytesArr"></param>
-        /// <returns>an image</returns>
-
-        public static Image byteArrayToImage(byte[] bytesArr)
-        {
-            using (MemoryStream memstr = new MemoryStream(bytesArr))
-            {
-                Image img = Image.FromStream(memstr);
-                return img;
-            }
-        }
+        
 
 
     }
