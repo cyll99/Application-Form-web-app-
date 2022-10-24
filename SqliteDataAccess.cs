@@ -10,20 +10,20 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
-using Microsoft.Data.Sqlite;
 
 namespace Etudiant
 {
     class SqliteDataAccess
     {
+        static string conn = ConfigurationManager.ConnectionStrings["myConnection"].ConnectionString;
+
 
         public static void CreateIfNotExists()
         {
-            using (IDbConnection cnn = new SqliteConnection("Data Source=./personnes.db;Version=3"))
+            using (IDbConnection cnn = new SQLiteConnection(conn))
             {
-
                 var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom1 TEXT, prenom2 TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
-
+                
                 cnn.Execute(query, new DynamicParameters());
             }
         }
@@ -34,7 +34,7 @@ namespace Etudiant
         public static List<Personne> LoadFilms()
         {
             List<Personne> personnes = new List<Personne>();
-            using (SQLiteConnection cnn = new SQLiteConnection("Data Source=./personnes.db;Version=3"))
+            using (SQLiteConnection cnn = new SQLiteConnection(conn))
             {
                 var query = "select * from infos";
                 cnn.Open();
@@ -76,9 +76,9 @@ namespace Etudiant
         /// Insert film in local database
         /// </summary>
         /// <param name="film"></param>
-        public static void SaveFilm(Personne personne)
+        public static void SavePersonne(Personne personne)
         {
-            using (SQLiteConnection cnn = new SQLiteConnection("Data Source=./personnes.db;Version=3"))
+            using (SQLiteConnection cnn = new SQLiteConnection(conn))
             {
                 cnn.Open();
 

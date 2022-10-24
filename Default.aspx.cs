@@ -9,25 +9,14 @@ namespace Etudiant
 {
     public partial class Default : System.Web.UI.Page
     {
+        DateTime now = DateTime.Now;
+        Personne personne;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            SqliteDataAccess.CreateIfNotExists();
         }
 
-        protected void TextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void TextBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void ListView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+       
         /// <summary>
         /// Enable save button after filling required text boxes
         /// </summary>
@@ -126,5 +115,88 @@ namespace Etudiant
             EmptyBoxes();//clear all boxes
 
         }
+
+       
+
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            if (!IfBoxEmpty()) //check if the required boxes contain valid informations
+            {
+                String nom = txtNom.Text.Trim().ToString();
+                String adresse = txtAdresse.Text.Trim().ToString();
+                String nationalite = txtNationalite.Text.Trim().ToString();
+                String ville = txtVille.Text.Trim().ToString();
+                String pays = txtPays.Text.Trim().ToString();
+                String prenom1 = txtPrenom1.Text.Trim().ToString();
+                String prenom2 = txtPrenom2.Text.Trim().ToString();
+                String age = txtAge.Text.Trim();
+                String telephone = txtTelephone.Text.Trim();
+                String dateCree = $"{now.Day} / {now.Month} / {now.Year}";
+
+
+                ////check if the infos provided are valid
+                //String[] infos = { nom, prenom1, prenom2, adresse, ville, pays, nationalite };
+                //foreach (string info in infos)
+                //{
+                //    if (!VerifyLetter(info))
+                //    {
+                //        MessageBox.Show($"L'information {info} n'est pas valide");
+                //        return;
+                //    }
+                //}
+                //if (VerifyLetter(age))
+                //{
+                //    MessageBox.Show($"L'age ne doit pas contenir de lettre");
+                //    return;
+                //}
+                //if (VerifyLetter(telephone))
+                //{
+                //    MessageBox.Show($"Le numero de telephone ne doit pas contenir de lettre");
+                //    return;
+                //}
+                //string trim = String.Concat(telephone.Where(c => !Char.IsWhiteSpace(c)));//delete all spaces
+                //if (trim.Length < 8)
+                //{
+                //    MessageBox.Show($"Le numero de telephone local doit avoir au moins huit chiffres.");
+                //    return;
+                //}
+                int Age = int.Parse(age);
+
+                personne = new Personne(nom, prenom1, prenom2, Age, nationalite, adresse, ville, pays, telephone, dateCree); //initialization of the class
+                SqliteDataAccess.SavePersonne(personne);
+
+
+
+                //personnes.Add(personne); // add personne to the list
+
+
+                //// setting infos to display
+                //String prenom = personne.Prenom1 + " " + personne.Prenom2;
+                //nom = personne.Nom;
+                //age = personne.Age.ToString();
+                //telephone = personne.Telephone;
+
+                //// set up list view items 
+                //ListViewItem listviewItem = new ListViewItem();
+                //listviewItem.Text = nom;
+                //listviewItem.SubItems.Add(prenom);
+                //listviewItem.SubItems.Add(age);
+                //listviewItem.SubItems.Add(telephone);
+                //listView.Items.Add(listviewItem);
+
+                //// add data to file to display later
+                //using (StreamWriter sw = new StreamWriter(DATA_TO_DISPLAY, true, Encoding.UTF8))
+                //{
+                //    sw.WriteLine($"{nom},{prenom},{age},{telephone},{nationalite},{pays},{ville},{adresse},{dateCree}");
+                //}
+
+
+                //EmptyBoxes(); //Empty all boxes 
+                btnSave.Enabled = false; //disable button save
+
+            }
+        }
+
+      
     }
 }
