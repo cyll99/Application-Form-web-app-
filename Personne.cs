@@ -45,7 +45,21 @@ namespace Etudiant
         /// </summary>
         /// <param name="word"></param>
         /// <returns>A string capitalized </returns>
-        private string capitalize(string word) => (char.ToUpper(word[0]) + word.Substring(1));
+        private string capitalize(string text)
+        {
+            string result = "";
+            string[] words = text.Split(' ');
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                string firstLetter = words[i].Substring(0, 1).ToUpper();
+                string restText = words[i].Substring(1).ToLower();
+                result += firstLetter + restText + " ";
+            }
+
+            return result;
+        }
+
 
         public String Nom
         {

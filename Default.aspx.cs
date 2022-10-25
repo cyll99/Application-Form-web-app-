@@ -191,12 +191,11 @@ namespace Etudiant
                 //}
 
 
-                //EmptyBoxes(); //Empty all boxes 
-                btnSave.Enabled = false; //disable button save
+                EmptyBoxes(); //Empty all boxes 
 
             }
         }
 
-      
+       
     }
 }

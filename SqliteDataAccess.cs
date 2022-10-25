@@ -85,11 +85,11 @@ namespace Etudiant
               
               
                 string sql = @"
-                        insert into offline (nom, prenom1, prenom2, age, nationalite, adresse, ville, pays, telephone, date)
+                        insert into infos (nom, prenom1, prenom2, age, nationalite, adresse, ville, pays, telephone, date)
                         Select @nom , @prenom1, @prenom2, @age, @nationalite, @adresse, @ville,@pays,@telephone,@date
                         Where not exists (
                             select * 
-                            from offline 
+                            from infos 
                             where 
                                 nom = @nom
                             and prenom1 = @prenom1
