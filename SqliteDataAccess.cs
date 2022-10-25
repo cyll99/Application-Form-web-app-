@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
@@ -22,7 +23,7 @@ namespace Etudiant
         {
             using (IDbConnection cnn = new SQLiteConnection(conn))
             {
-                var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom1 TEXT, prenom2 TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
+                var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
                 
                 cnn.Execute(query, new DynamicParameters());
             }
@@ -31,43 +32,33 @@ namespace Etudiant
         /// Load film from local database
         /// </summary>
         /// <returns> List of films</returns>
-        public static List<Personne> LoadFilms()
+        public static DataTable LoadData()
         {
-            List<Personne> personnes = new List<Personne>();
+            DataTable dt;
+            
             using (SQLiteConnection cnn = new SQLiteConnection(conn))
             {
-                var query = "select * from infos";
+
+                var query = "select nom, prenom, age, telephone from infos";
                 cnn.Open();
 
-                SQLiteCommand sQLiteCommand = new SQLiteCommand(query, cnn);
-                SQLiteDataReader sQLiteDataReader = sQLiteCommand.ExecuteReader();
-                if (sQLiteDataReader.HasRows)
+                using (SQLiteCommand cmd = new SQLiteCommand(query))
                 {
-                    
-                    while (sQLiteDataReader.Read())
+                    using (SQLiteDataAdapter sda = new SQLiteDataAdapter())
                     {
-                        //Personne personne = new Personne();
-                        var nom = (string)sQLiteDataReader["nom"];
-                        var prenom1 = (string)sQLiteDataReader["prenom1"];
-                        var prenom2 = (string)sQLiteDataReader["prenom2"];
-                        var age = Convert.ToInt32(sQLiteDataReader["age"]);
-                        var telephone = (string)sQLiteDataReader["telephone"];
-                        var pays = (string)sQLiteDataReader["pays"];
-                        var ville = (string)sQLiteDataReader["ville"];
-                        var nationalite = (string)sQLiteDataReader["nationalite"];
-                        var adresse = (string)sQLiteDataReader["adresse"];
-                        var date = (string)sQLiteDataReader["date"];
-
-                        Personne personne = new Personne(nom, prenom1, prenom2, age, nationalite, adresse, ville, pays, telephone, date);
-
-                        
-
-                        
-                        personnes.Add(personne);
+                        cmd.Connection = cnn;
+                        sda.SelectCommand = cmd;
+                        using (dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            
+                        }
                     }
                 }
 
-                return personnes;
+          
+
+                return dt;
             }
 
         }
@@ -85,15 +76,14 @@ namespace Etudiant
               
               
                 string sql = @"
-                        insert into infos (nom, prenom1, prenom2, age, nationalite, adresse, ville, pays, telephone, date)
-                        Select @nom , @prenom1, @prenom2, @age, @nationalite, @adresse, @ville,@pays,@telephone,@date
+                        insert into infos (nom, prenom, age, nationalite, adresse, ville, pays, telephone, date)
+                        Select @nom , @prenom, @age, @nationalite, @adresse, @ville,@pays,@telephone,@date
                         Where not exists (
                             select * 
                             from infos 
                             where 
                                 nom = @nom
-                            and prenom1 = @prenom1
-                            and prenom2 = @prenom2
+                            and prenom = @prenom
                             and age = @age
                             and nationalite = @nationalite
                             and adresse = @adresse
@@ -105,9 +95,9 @@ namespace Etudiant
                         ";
                 using ( var cmd = new SQLiteCommand(sql, cnn))
                 {
+                    string prenom = $"{personne.Prenom1} {personne.Prenom2}";
                     cmd.Parameters.AddWithValue("@nom", personne.Nom);
-                    cmd.Parameters.AddWithValue("@prenom1", personne.Prenom1);
-                    cmd.Parameters.AddWithValue("@prenom2", personne.Prenom2);
+                    cmd.Parameters.AddWithValue("@prenom", prenom);
                     cmd.Parameters.AddWithValue("@age", personne.Age);
                     cmd.Parameters.AddWithValue("@nationalite", personne.Nationalite);
                     cmd.Parameters.AddWithValue("@adresse", personne.AdresseRue);

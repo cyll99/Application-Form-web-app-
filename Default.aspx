@@ -57,8 +57,21 @@
         <br />
         <br />
         <br />
-        <asp:ListView ID="ListView1" runat="server">
-        </asp:ListView>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div style="margin-left: 120px">
+            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" AllowPaging="true"
+            OnPageIndexChanging="OnPageIndexChanging" PageSize="10" style="margin-left: 0px" Width="583px">
+                <Columns>
+                    <asp:BoundField  DataField="nom" HeaderText="Nom" />
+                    <asp:BoundField  DataField="prenom" HeaderText="Prenom" />
+                    <asp:BoundField  DataField="age" HeaderText="Age" />
+                    <asp:BoundField  DataField="telephone" HeaderText="Telephone" />
+                </Columns>
+            </asp:GridView>
+        </div>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server"></asp:SqlDataSource>
+        <br />
+        <br />
     </form>
 </body>
 </html>

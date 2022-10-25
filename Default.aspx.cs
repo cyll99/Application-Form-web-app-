@@ -14,6 +14,8 @@ namespace Etudiant
         protected void Page_Load(object sender, EventArgs e)
         {
             SqliteDataAccess.CreateIfNotExists();
+            this.BindGrid();
+
         }
 
        
@@ -196,6 +198,16 @@ namespace Etudiant
             }
         }
 
-       
+        protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridView1.PageIndex = e.NewPageIndex;
+            this.BindGrid();
+        }
+        
+        private void BindGrid()
+        {
+            GridView1.DataSource = SqliteDataAccess.LoadData();
+            GridView1.DataBind();
+        }
     }
 }
