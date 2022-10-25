@@ -16,26 +16,14 @@ namespace Etudiant
         DataTable data;
         protected void Page_Load(object sender, EventArgs e)
         {
-            SqliteDataAccess.CreateIfNotExists();
-            data = SqliteDataAccess.LoadData();
-            this.BindGrid();
+            SqliteDataAccess.CreateIfNotExists();// create table 
+            data = SqliteDataAccess.LoadData(); // load data from database
+            this.BindGrid(); // bind data to gridview
 
         }
 
        
-        /// <summary>
-        /// Enable save button after filling required text boxes
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EnableButton(object sender, EventArgs e)
-        {
-
-            if (!IfBoxEmpty())
-                btnSave.Enabled = true;
-
-
-        }
+       
 
         /// <summary>
         /// Mehode to clear text box
@@ -93,32 +81,11 @@ namespace Etudiant
 
 
 
-        /// <summary>
-        /// Methode to check if infos are valid
-        /// </summary>
-        /// <returns></returns>
-        public bool ValidInfos()
-        {
-            TextBox[] texboxes = { txtNom, txtAdresse, txtNationalite, txtVille, txtPays };
-            foreach (TextBox textBox in texboxes)
-            {
-                if (!VerifyLetter(textBox.Text.Trim().ToString()))
-                    return false;
-            }
-            if (!VerifyLetter(txtPrenom1.Text.Trim().ToString()) || !VerifyLetter(txtPrenom2.Text.Trim().ToString()))
-                return false;
-            else if (VerifyLetter(txtAge.Text.Trim()))
-                return false;
-            else if (VerifyLetter(txtTelephone.Text.Trim()))
-                return false;
-            else if (int.Parse(txtAge.Text.Trim()) < 0 && 150 < int.Parse(txtAge.Text.Trim()))
-                return false;
-            return true;
-        }
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             EmptyBoxes();//clear all boxes
+            Label1.Text = "";
 
         }
 
@@ -141,31 +108,16 @@ namespace Etudiant
 
 
                 ////check if the infos provided are valid
-                //String[] infos = { nom, prenom1, prenom2, adresse, ville, pays, nationalite };
-                //foreach (string info in infos)
-                //{
-                //    if (!VerifyLetter(info))
-                //    {
-                //        MessageBox.Show($"L'information {info} n'est pas valide");
-                //        return;
-                //    }
-                //}
-                //if (VerifyLetter(age))
-                //{
-                //    MessageBox.Show($"L'age ne doit pas contenir de lettre");
-                //    return;
-                //}
-                //if (VerifyLetter(telephone))
-                //{
-                //    MessageBox.Show($"Le numero de telephone ne doit pas contenir de lettre");
-                //    return;
-                //}
-                //string trim = String.Concat(telephone.Where(c => !Char.IsWhiteSpace(c)));//delete all spaces
-                //if (trim.Length < 8)
-                //{
-                //    MessageBox.Show($"Le numero de telephone local doit avoir au moins huit chiffres.");
-                //    return;
-                //}
+                String[] infos = { nom, prenom1, prenom2, ville, pays, nationalite };
+                foreach (string info in infos)
+                {
+                    if (!VerifyLetter(info))
+                    {
+                        Label1.Text = $"L'information {info} n'est pas valide";
+                        return;
+                    }
+                }
+                
 
                 // formattage
                 int Age = int.Parse(age);
@@ -175,11 +127,12 @@ namespace Etudiant
 
                 string prenom = $"{personne.Prenom1} {personne.Prenom2}";
 
-                data.Rows.Add(new object[] {nom, prenom, Age, telephone });
+                data.Rows.Add(new object[] {nom, prenom, Age, telephone }); // add a new row to data
                 BindGrid();
 
 
                 EmptyBoxes(); //Empty all boxes 
+                Label1.Text = "";
 
             }
         }
@@ -189,14 +142,15 @@ namespace Etudiant
             GridView1.PageIndex = e.NewPageIndex;
             this.BindGrid();
         }
-        
+        /// <summary>
+        /// Binding data to gridView
+        /// </summary>
         private void BindGrid()
         {   
             GridView1.DataSource = data;
             GridView1.DataBind();
             
         }
-        //converting the objects to DataTable
 
     }
 }
