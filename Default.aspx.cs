@@ -4,16 +4,20 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
+
 
 namespace Etudiant
-{
+{   
     public partial class Default : System.Web.UI.Page
     {
         DateTime now = DateTime.Now;
         Personne personne;
+        DataTable data;
         protected void Page_Load(object sender, EventArgs e)
         {
             SqliteDataAccess.CreateIfNotExists();
+            data = SqliteDataAccess.LoadData();
             this.BindGrid();
 
         }
@@ -162,35 +166,17 @@ namespace Etudiant
                 //    MessageBox.Show($"Le numero de telephone local doit avoir au moins huit chiffres.");
                 //    return;
                 //}
+
+                // formattage
                 int Age = int.Parse(age);
 
                 personne = new Personne(nom, prenom1, prenom2, Age, nationalite, adresse, ville, pays, telephone, dateCree); //initialization of the class
                 SqliteDataAccess.SavePersonne(personne);
 
+                string prenom = $"{personne.Prenom1} {personne.Prenom2}";
 
-
-                //personnes.Add(personne); // add personne to the list
-
-
-                //// setting infos to display
-                //String prenom = personne.Prenom1 + " " + personne.Prenom2;
-                //nom = personne.Nom;
-                //age = personne.Age.ToString();
-                //telephone = personne.Telephone;
-
-                //// set up list view items 
-                //ListViewItem listviewItem = new ListViewItem();
-                //listviewItem.Text = nom;
-                //listviewItem.SubItems.Add(prenom);
-                //listviewItem.SubItems.Add(age);
-                //listviewItem.SubItems.Add(telephone);
-                //listView.Items.Add(listviewItem);
-
-                //// add data to file to display later
-                //using (StreamWriter sw = new StreamWriter(DATA_TO_DISPLAY, true, Encoding.UTF8))
-                //{
-                //    sw.WriteLine($"{nom},{prenom},{age},{telephone},{nationalite},{pays},{ville},{adresse},{dateCree}");
-                //}
+                data.Rows.Add(new object[] {nom, prenom, Age, telephone });
+                BindGrid();
 
 
                 EmptyBoxes(); //Empty all boxes 
@@ -205,9 +191,12 @@ namespace Etudiant
         }
         
         private void BindGrid()
-        {
-            GridView1.DataSource = SqliteDataAccess.LoadData();
+        {   
+            GridView1.DataSource = data;
             GridView1.DataBind();
+            
         }
+        //converting the objects to DataTable
+
     }
 }
