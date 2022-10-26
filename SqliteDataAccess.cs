@@ -29,7 +29,7 @@ namespace Etudiant
             }
         }
         /// <summary>
-        /// Load film from local database
+        /// Load personne from database
         /// </summary>
         /// <returns> List of films</returns>
         public static DataTable LoadData()
@@ -65,7 +65,7 @@ namespace Etudiant
         }
         
         /// <summary>
-        /// Insert film in local database
+        /// Insert personne in database
         /// </summary>
         /// <param name="film"></param>
         public static void SavePersonne(Personne personne)
