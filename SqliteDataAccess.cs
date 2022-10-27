@@ -16,7 +16,13 @@ namespace Etudiant
 {
     class SqliteDataAccess
     {
-        static string conn = ConfigurationManager.ConnectionStrings["myConnection"].ConnectionString;
+        //static string conn = ConfigurationManager.ConnectionStrings["myConnection"].ConnectionString;
+
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location; // path of the exe file
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath); // working directory
+        static string dataFilePath = System.IO.Path.Combine(strWorkPath, "personnes.db");
+
+        static string conn = $"Data Source={dataFilePath};Version=3";
 
 
         public static void CreateIfNotExists()

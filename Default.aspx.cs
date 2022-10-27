@@ -127,7 +127,7 @@ namespace Etudiant
 
                 string prenom = $"{personne.Prenom1} {personne.Prenom2}";
 
-                data.Rows.Add(new object[] {nom, prenom, Age, telephone }); // add a new row to data
+                data.Rows.Add(new object[] {personne.Nom, prenom, personne.Age, personne.Telephone }); // add a new row to data
                 BindGrid();
 
 
