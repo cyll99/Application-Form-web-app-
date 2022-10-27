@@ -8,6 +8,11 @@
     <link href="Content/bootstrap.css" rel="stylesheet" />
 </head>
 <body style="height: 144px">
+    <div class="text-center">
+        
+            <h1 class="display-1" >FORMULAIRE</h1>
+
+    </div>
 
     <div class="form-group">
             <form id="form1" runat="server">

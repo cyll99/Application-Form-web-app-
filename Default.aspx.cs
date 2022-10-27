@@ -6,7 +6,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-
+/// <summary>
+/// Nom: Larose
+/// Prenom : Christ-Yan Love
+/// </summary>
 namespace Etudiant
 {   
     public partial class Default : System.Web.UI.Page
@@ -119,16 +122,15 @@ namespace Etudiant
                 }
                 
 
-                // formattage
                 int Age = int.Parse(age);
 
                 personne = new Personne(nom, prenom1, prenom2, Age, nationalite, adresse, ville, pays, telephone, dateCree); //initialization of the class
-                SqliteDataAccess.SavePersonne(personne);
+                SqliteDataAccess.SavePersonne(personne); // save personne in database
 
                 string prenom = $"{personne.Prenom1} {personne.Prenom2}";
 
                 data.Rows.Add(new object[] {personne.Nom, prenom, personne.Age, personne.Telephone }); // add a new row to data
-                BindGrid();
+                BindGrid();//bind data
 
 
                 EmptyBoxes(); //Empty all boxes 

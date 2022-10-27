@@ -13,18 +13,23 @@ using System.Threading.Tasks;
 using Dapper;
 
 namespace Etudiant
-{
+{/// <summary>
+/// Nom: Larose
+/// Prenom : Christ-Yan Love
+/// </summary>
     class SqliteDataAccess
     {
         //static string conn = ConfigurationManager.ConnectionStrings["myConnection"].ConnectionString;
 
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location; // path of the exe file
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath); // working directory
-        static string dataFilePath = System.IO.Path.Combine(strWorkPath, "personnes.db");
+        static string dataFilePath = System.IO.Path.Combine(strWorkPath, "personnes.db"); // path database file
 
-        static string conn = $"Data Source={dataFilePath};Version=3";
+        static string conn = $"Data Source={dataFilePath};Version=3"; // connection string
 
-
+        /// <summary>
+        /// Create a table in the database
+        /// </summary>
         public static void CreateIfNotExists()
         {
             using (IDbConnection cnn = new SQLiteConnection(conn))
@@ -73,7 +78,7 @@ namespace Etudiant
         /// <summary>
         /// Insert personne in database
         /// </summary>
-        /// <param name="film"></param>
+        /// <param name="personne"></param>
         public static void SavePersonne(Personne personne)
         {
             using (SQLiteConnection cnn = new SQLiteConnection(conn))
