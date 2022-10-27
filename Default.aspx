@@ -8,11 +8,13 @@
     <link href="Content/bootstrap.css" rel="stylesheet" />
 </head>
 <body style="height: 144px">
-    <div class="text-center">
+    <div class="jumbotron text-center">
         
-            <h1 class="display-1" >FORMULAIRE</h1>
+            <h1 class="display-1" >SIMPLE FORMULAIRE</h1>
 
     </div>
+
+
 
     <div class="form-group">
             <form id="form1" runat="server">
@@ -85,7 +87,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <div style="margin-left: 320px">
             &nbsp;&nbsp;&nbsp;
-            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" AllowPaging="true"
+            <asp:GridView ID="GridView1" runat="server" class="jumbotron text-center" AutoGenerateColumns="false" AllowPaging="true" CssClass="table table-striped table-bordered table-hover"
             OnPageIndexChanging="OnPageIndexChanging" PageSize="10" style="margin-left: 0px" Width="583px">
                 <Columns>
                     <asp:BoundField  DataField="nom" HeaderText="Nom" />
@@ -98,10 +100,13 @@
         <br />
         <br />
         <script src="Scripts/jquery-1.9.0.js"></script>
-        <script src"Scripts/bootsrap.js"></script>
+        <script src="Scripts/bootsrap.js"></script>
     </form>
 
     </div>
-
+     <!-- Datatables-->
+    <script src="bootstrap/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="bootstrap/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js">
+    </script>
 </body>
 </html>
