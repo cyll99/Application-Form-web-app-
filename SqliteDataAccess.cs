@@ -13,10 +13,7 @@ using System.Threading.Tasks;
 using Dapper;
 
 namespace Etudiant
-{/// <summary>
-/// Nom: Larose
-/// Prenom : Christ-Yan Love
-/// </summary>
+{
     class SqliteDataAccess
     {
         //static string conn = ConfigurationManager.ConnectionStrings["myConnection"].ConnectionString;

@@ -6,10 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-/// <summary>
-/// Nom: Larose
-/// Prenom : Christ-Yan Love
-/// </summary>
+
 namespace Etudiant
 {   
     public partial class Default : System.Web.UI.Page

@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-/// <summary>
-/// Nom: Larose
-/// Prenom : Christ-Yan Love
-/// </summary>
+
 namespace Etudiant
 {
     class Personne
