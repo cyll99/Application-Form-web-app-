@@ -32,7 +32,7 @@ namespace Etudiant
             using (IDbConnection cnn = new SQLiteConnection(conn))
             {
                 var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
-                
+                Console.WriteLine("BASE DE DONNEE"+strExeFilePath);
                 cnn.Execute(query, new DynamicParameters());
             }
         }
