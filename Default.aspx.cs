@@ -6,13 +6,15 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-
+/// <summary>
+/// Christ- Yan Love LAROSE
+/// </summary>
 namespace Etudiant
 {   
     public partial class Default : System.Web.UI.Page
     {
         DateTime now = DateTime.Now;
-        Personne personne;
+        Employes employes;
         DataTable data;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -34,11 +36,16 @@ namespace Etudiant
             txtNom.Text = String.Empty;
             txtPrenom1.Text = String.Empty;
             txtPrenom2.Text = String.Empty;
-            txtVille.Text = String.Empty;
-            txtPays.Text = String.Empty;
-            txtAge.Text = String.Empty;
+            txtDateEmbauche.Text = String.Empty;
+            txtDateNaissance.Text = String.Empty;
             txtTelephone.Text = String.Empty;
-            txtNationalite.Text = String.Empty;
+            txtEmail.Text = String.Empty;
+            //DropSex.SelectedValue = (DropSex.SelectedItem).ToString();
+
+            txtNomContact.Text = String.Empty;
+            txtPrenomContact.Text = String.Empty;
+            txtTelContact.Text = String.Empty;
+            //DropLien.SelectedValue = (DropLien.SelectedItem).ToString();
             txtNom.Focus();
 
         }
@@ -55,7 +62,8 @@ namespace Etudiant
             foreach (char letter in trim)
             {
                 if (!Char.IsLetter(letter))
-                    return false;
+                    if (letter != '-')
+                        return false;
             }
             return true;
         }
@@ -67,7 +75,7 @@ namespace Etudiant
         /// <returns></returns>
         public bool IfBoxEmpty()
         {
-            TextBox[] texboxes = { txtNom, txtAdresse, txtAge, txtNationalite, txtTelephone, txtVille, txtPays };
+            TextBox[] texboxes = { txtNom, txtAdresse, txtDateNaissance,  txtTelephone, txtDateEmbauche, txtEmail, txtNomContact, txtPrenomContact, txtTelContact };
             foreach (TextBox textBox in texboxes)
             {
                 if (textBox.Text.Length == 0)
@@ -97,18 +105,22 @@ namespace Etudiant
             {
                 String nom = txtNom.Text.Trim().ToString();
                 String adresse = txtAdresse.Text.Trim().ToString();
-                String nationalite = txtNationalite.Text.Trim().ToString();
-                String ville = txtVille.Text.Trim().ToString();
-                String pays = txtPays.Text.Trim().ToString();
+                String dateEmbauche = txtDateEmbauche.Text.Trim().ToString();
+                String dateNaissance = txtDateNaissance.Text.Trim().ToString();
                 String prenom1 = txtPrenom1.Text.Trim().ToString();
                 String prenom2 = txtPrenom2.Text.Trim().ToString();
-                String age = txtAge.Text.Trim();
+                String email = txtEmail.Text.Trim();
                 String telephone = txtTelephone.Text.Trim();
-                String dateCree = $"{now.Day} / {now.Month} / {now.Year}";
+                String sexe = DropSex.Text.Trim();
+
+                String nomContact = txtNomContact.Text.Trim();
+                String prenomContact = txtPrenomContact.Text.Trim();
+                String telContact = txtTelContact.Text.Trim();
+                String lien = DropLien.Text.Trim();
 
 
                 ////check if the infos provided are valid
-                String[] infos = { nom, prenom1, prenom2, ville, pays, nationalite };
+                String[] infos = { nom, prenom1, prenom2, nomContact, prenomContact };
                 foreach (string info in infos)
                 {
                     if (!VerifyLetter(info))
@@ -119,14 +131,14 @@ namespace Etudiant
                 }
                 
 
-                int Age = int.Parse(age);
+                //int Age = int.Parse(age);
 
-                personne = new Personne(nom, prenom1, prenom2, Age, nationalite, adresse, ville, pays, telephone, dateCree); //initialization of the class
-                SqliteDataAccess.SavePersonne(personne); // save personne in database
+                employes = new Employes(nom, prenom1, prenom2, sexe, email, adresse, dateNaissance, dateEmbauche, telephone, nomContact, prenomContact, lien, telContact); //initialization of the class
+                SqliteDataAccess.SavePersonne(employes); // save employes in database
 
-                string prenom = $"{personne.Prenom1} {personne.Prenom2}";
+                string prenom = $"{employes.Prenom1} {employes.Prenom2}";
 
-                data.Rows.Add(new object[] {personne.Nom, prenom, personne.Age, personne.Telephone }); // add a new row to data
+                //data.Rows.Add(new object[] {employes.Nom, prenom, employes.Age, employes.Telephone }); // add a new row to data
                 BindGrid();//bind data
 
 

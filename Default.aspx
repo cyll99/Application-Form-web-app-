@@ -4,17 +4,17 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Application Form</title>
+    <title>FORME EMPLOYES</title>
     <link href="Content/bootstrap.css" rel="stylesheet" />
 </head>
 <body style="height: 144px">
     <div class="jumbotron text-center">
         
-            <h1 class="display-1" >SIMPLE FORMULAIRE</h1>
+            <h1 class="display-1" >FORMULAIRE EMPLOYES</h1>
 
     </div>
 
-
+    <%-- PERSONAL INFORMATIONS --%>
 
     <div class="form-group">
             <form id="form1" runat="server">
@@ -38,38 +38,160 @@
 
                         </div>
                         <div class="col-lg-4">
-                            <asp:TextBox ID="txtAge" runat="server" CssClass="form-control" Placeholder="Age" ></asp:TextBox>
-                            <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="txtAge" ErrorMessage="Range 1-150" ForeColor="Red" MaximumValue="150" MinimumValue="1" Type="Integer"></asp:RangeValidator>                    
+                            <asp:TextBox ID="txtDateNaissance" runat="server" CssClass="form-control" Placeholder="Date de naissance" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator" runat="server" ControlToValidate="txtDateNaissance" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>                    
                         </div>
                         <div class="col-lg-4">
-                            <asp:TextBox ID="txtTelephone" runat="server" CssClass="form-control" Placeholder="Telephone"></asp:TextBox>
-                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtTelephone" ErrorMessage="000-000-0000" ForeColor="Red" ValidationExpression="((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}"></asp:RegularExpressionValidator>                    
+                            <asp:TextBox ID="txtTelephone" runat="server" CssClass="form-control" Placeholder="Telephone" TextMode="Phone" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtTelephone" ErrorMessage="000-000-00" ForeColor="Red" ValidationExpression="\d{3}-\d{3}-\d{2}"></asp:RegularExpressionValidator>                    
                         </div>                    
+                                       
                         <div class="col-lg-4">
-                            <asp:TextBox ID="txtNationalite" Placeholder="Nationalite" CssClass="form-control" runat="server" ></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtNationalite" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
+                            <asp:TextBox ID="txtDateEmbauche" Placeholder="Date d'embauche" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtDateEmbauche" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
 
                         </div>                    
                         <div class="col-lg-4">
-                            <asp:TextBox ID="txtPays" Placeholder="Pays" runat="server" CssClass="form-control" ></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtPays" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
-
-                        </div>                    
-                        <div class="col-lg-4">
-                            <asp:TextBox ID="txtVille" Placeholder="Ville" runat="server" CssClass="form-control" ></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="txtVille" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>                    
+                            <asp:TextBox ID="txtEmail" Placeholder="Email" runat="server" CssClass="form-control" TextMode="Email" ValidateRequestMode="Enabled" ></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="txtEmail" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>                    
                         </div>
 
                         <div class="col-lg-4">
                             <asp:TextBox ID="txtAdresse" Placeholder="Adresse" runat="server" CssClass="form-control" ></asp:TextBox>
                              <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtAdresse" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
                      </div>
+                    <div class="col-lg-4">
+                         <asp:DropDownList ID="DropSex" runat="server" ValidateRequestMode="Enabled"  Placeholder="Sexe" >
+                    <asp:ListItem Selected="True">Sexe</asp:ListItem>
+                    <asp:ListItem>Femme</asp:ListItem>
+                    <asp:ListItem>Homme</asp:ListItem>
+                </asp:DropDownList>
+                        </div>
                     </div>                    
                 </div>
             </div>
 
         <asp:Label ID="Label1" class="label label-primary" runat="server"></asp:Label>
         <br />
+               <%-- CONTACT INFORMATION --%>
+                <br />
+                <br />
+                <br />
+                 <div class="jumbotron text-center">
+        
+            <h2 class="display-1" >PERSONNE A CONTACTER</h2></div>
+                 <div class="row">
+                <div class="col-lg-12">
+                <div class="col-lg-12">
+                    <div class="col-lg-4">
+                            <asp:TextBox ID="txtNomContact" runat="server"  CssClass="form-control" Placeholder="Nom" EnableViewState="False" ValidateRequestMode="Enabled" ViewStateMode="Disabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtNomContact" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>                    
+                        </div>
+                        <div class="col-lg-4">
+                            <asp:TextBox ID="txtPrenomContact" runat="server"  CssClass="form-control" Placeholder="Prenom" ValidateRequestMode="Enabled" ViewStateMode="Disabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtPrenomContact" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>                    
+                        </div>
+                     <div class="col-lg-4">
+                            <asp:TextBox ID="txtTelContact" runat="server" CssClass="form-control" Placeholder="Telephone" TextMode="Phone" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtTelContact" ErrorMessage="000-000-00" ForeColor="Red" ValidationExpression="\d{3}-\d{3}-\d{2}"></asp:RegularExpressionValidator>                    
+                        </div> 
+                     <div class="col-lg-4">
+                         <asp:DropDownList ID="DropLien" runat="server" ValidateRequestMode="Enabled"  Placeholder="Lien de parente" TabIndex="1" >
+                    <asp:ListItem Selected="True">Lien de parente</asp:ListItem>
+                    <asp:ListItem>Epouse</asp:ListItem>
+                    <asp:ListItem>Epoux</asp:ListItem>
+                             <asp:ListItem>Mere</asp:ListItem>
+                             <asp:ListItem>Pere</asp:ListItem>
+                             <asp:ListItem>Frere</asp:ListItem>
+                             <asp:ListItem>Soeur</asp:ListItem>
+                             <asp:ListItem>Autres</asp:ListItem>
+                </asp:DropDownList>
+                        </div>
+                    </div>
+                    </div>
+                     </div>
+                <%-- DIFFERENT DEPARTEMENTS --%>
+                   <br />
+               
+                <br />
+                <br />
+                <br />
+                 <div class="jumbotron text-center">
+        
+            <h2 class="display-1" >PACOURS AU SEIN DE L'ORGANISATION</h2></div>
+                 <div class="row">
+                <div class="col-lg-12">
+                <div class="col-lg-12">
+                   
+                     <div class="col-lg-4">
+                         <asp:DropDownList ID="DropDepartement" runat="server" ValidateRequestMode="Enabled"  Placeholder="Lien de parente" TabIndex="1" >
+                    <asp:ListItem Selected="True">Departement</asp:ListItem>
+                    <asp:ListItem>Conception</asp:ListItem>
+                    <asp:ListItem>Comptabilite</asp:ListItem>
+                             <asp:ListItem>Communication</asp:ListItem>
+                             <asp:ListItem>Formation</asp:ListItem>
+                             <asp:ListItem>Logistique</asp:ListItem>
+                             <asp:ListItem>Production</asp:ListItem>
+
+                </asp:DropDownList>
+                        </div>
+                    <div class="col-lg-4">
+                         <asp:DropDownList ID="DropPoste" runat="server" ValidateRequestMode="Enabled"  Placeholder="Lien de parente" TabIndex="1" >
+                    <asp:ListItem Selected="True">Fonction</asp:ListItem>
+                </asp:DropDownList>
+                        </div>
+                    
+                    <div class="col-lg-4">
+                            <asp:TextBox ID="TxtDebutFonction" Placeholder="Date d'entree en fonction" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="TxtDebutFonction" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
+
+                        </div>  
+                                 <div class="col-lg-4">
+                            <asp:TextBox ID="TxtFinFonction" Placeholder="Date fin de fonction" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" ControlToValidate="TxtDebutFonction" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
+
+                        </div> 
+                    </div>
+                    </div>
+                     </div>
+
+                        <%-- DIFFERENT DEGREE --%>
+                   <br />
+               
+                <br />
+                <br />
+                <br />
+                 <div class="jumbotron text-center">
+        
+            <h2 class="display-1" >PACOURS PROFESSIONNEL</h2></div>
+                 <div class="row">
+                <div class="col-lg-12">
+                <div class="col-lg-12">
+                   
+                     <div class="col-lg-4">
+                         <asp:DropDownList ID="DropDetention" runat="server" ValidateRequestMode="Enabled"  Placeholder="Lien de parente" TabIndex="1" >
+                    <asp:ListItem Selected="True">Certificat</asp:ListItem>
+                    <asp:ListItem>Licence</asp:ListItem>
+                    <asp:ListItem>Maitrise</asp:ListItem>
+                             <asp:ListItem>Doctorat</asp:ListItem>
+                </asp:DropDownList>
+                         </div>
+            
+                    
+                    <div class="col-lg-4">
+                            <asp:TextBox ID="textDiscipline" Placeholder="Discipline" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="textDiscipline" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
+                        </div>
+                                 <div class="col-lg-4">
+                            <asp:TextBox ID="txtDate" Placeholder="Annee de l'obtention" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="txtDate" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
+
+                        </div> 
+                    </div>
+                    </div>
+                     </div>
+
+
         <br />
         <br />
 

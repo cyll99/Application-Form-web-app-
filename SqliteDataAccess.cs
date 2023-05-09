@@ -10,8 +10,12 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using Dapper;
-
+using static System.Net.Mime.MediaTypeNames;
+/// <summary>
+/// Christ- Yan Love LAROSE
+/// </summary>
 namespace Etudiant
 {
     class SqliteDataAccess
@@ -20,9 +24,10 @@ namespace Etudiant
 
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location; // path of the exe file
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath); // working directory
-        static string dataFilePath = System.IO.Path.Combine(strWorkPath, "personnes.db"); // path database file
+        static string dataFilePath = System.IO.Path.Combine(strWorkPath, "CRECH.db"); // path database file
 
-        static string conn = $"Data Source={dataFilePath};Version=3"; // connection string
+        //static string conn = $"Data Source={dataFilePath};Version=3"; // connection string
+        static string conn = $"Data Source=C:\\Users\\cyllx\\Documents\\CRECH.DB; Version=3";
 
         /// <summary>
         /// Create a table in the database
@@ -31,13 +36,17 @@ namespace Etudiant
         {
             using (IDbConnection cnn = new SQLiteConnection(conn))
             {
-                var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
+
+                //var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
+
+                var query = "CREATE TABLE IF NOT EXISTS employes( ID INTEGER NOT NULL DEFAULT 1000 UNIQUE, nom TEXT NOT NULL, prenom TEXT NOT NULL, sexe TEXT NOT NULL, dateNaissance TEXT NOT NULL, dateEmbauche  TEXT NOT NULL, nomContact TEXT NOT NULL, prenomContact  TEXT NOT NULL, lien  TEXT NOT NULL, telephone TEXT NOT NULL UNIQUE, telephoneContact  TEXT NOT NULL, adresse   TEXT NOT NULL, email TEXT NOT NULL UNIQUE,PRIMARY KEY( ID AUTOINCREMENT))";
+
                 Console.WriteLine("BASE DE DONNEE"+strExeFilePath);
                 cnn.Execute(query, new DynamicParameters());
             }
         }
         /// <summary>
-        /// Load personne from database
+        /// Load employes from database
         /// </summary>
         /// <returns> List of films</returns>
         public static DataTable LoadData()
@@ -47,7 +56,7 @@ namespace Etudiant
             using (SQLiteConnection cnn = new SQLiteConnection(conn))
             {
 
-                var query = "select nom, prenom, age, telephone from infos";
+                var query = "select nom, prenom, sexe, telephone from employes";
                 cnn.Open();
 
                 using (SQLiteCommand cmd = new SQLiteCommand(query))
@@ -73,10 +82,10 @@ namespace Etudiant
         }
         
         /// <summary>
-        /// Insert personne in database
+        /// Insert employes in database
         /// </summary>
-        /// <param name="personne"></param>
-        public static void SavePersonne(Personne personne)
+        /// <param name="employe"></param>
+        public static void SavePersonne(Employes employe)
         {
             using (SQLiteConnection cnn = new SQLiteConnection(conn))
             {
@@ -85,37 +94,42 @@ namespace Etudiant
               
               
                 string sql = @"
-                        insert into infos (nom, prenom, age, nationalite, adresse, ville, pays, telephone, date)
-                        Select @nom , @prenom, @age, @nationalite, @adresse, @ville,@pays,@telephone,@date
+                        insert into employes (nom, prenom, sexe, dateNaissance, dateEmbauche, nomContact, prenomContact, lien, telephone, telephoneContact, adresse, email)
+                        Select @nom, @prenom, @sexe, @dateNaissance, @dateEmbauche, @nomContact, @prenomContact, @lien, @telephone, @telephoneContact, @adresse, @email
                         Where not exists (
                             select * 
-                            from infos 
+                            from employes 
                             where 
                                 nom = @nom
                             and prenom = @prenom
-                            and age = @age
-                            and nationalite = @nationalite
-                            and adresse = @adresse
-                            and ville = @ville
-                            and pays = @pays
+                            and sexe = @sexe
+                            and dateNaissance = @dateNaissance
+                            and dateEmbauche = @dateEmbauche
+                            and nomContact = @nomContact
+                            and prenomContact = @prenomContact
+                            and lien = @lien
                             and telephone = @telephone
-                            and date = @date
-)
-                        ";
+                            and telephoneContact = @telephoneContact
+                            and adresse = @adresse
+                            and email = @email)";
+
                 using ( var cmd = new SQLiteCommand(sql, cnn))
                 {
-                    string prenom = $"{personne.Prenom1} {personne.Prenom2}";
-                    cmd.Parameters.AddWithValue("@nom", personne.Nom);
+                    string prenom = $"{employe.Prenom1} {employe.Prenom2}";
+                    cmd.Parameters.AddWithValue("@nom", employe.Nom);
                     cmd.Parameters.AddWithValue("@prenom", prenom);
-                    cmd.Parameters.AddWithValue("@age", personne.Age);
-                    cmd.Parameters.AddWithValue("@nationalite", personne.Nationalite);
-                    cmd.Parameters.AddWithValue("@adresse", personne.AdresseRue);
-                    cmd.Parameters.AddWithValue("@ville", personne.Ville);
-                    cmd.Parameters.AddWithValue("@pays", personne.Pays);
-                    cmd.Parameters.AddWithValue("@telephone", personne.Telephone);
-                    cmd.Parameters.AddWithValue("@date", personne.DateCree);
+                    cmd.Parameters.AddWithValue("@sexe", employe.Sexe);
+                    cmd.Parameters.AddWithValue("@dateNaissance", employe.DateNaissance);
+                    cmd.Parameters.AddWithValue("@adresse", employe.AdresseRue);
+                    cmd.Parameters.AddWithValue("@dateEmbauche", employe.DateEmbauche);
+                    cmd.Parameters.AddWithValue("@nomContact", employe.NomAContacter);
+                    cmd.Parameters.AddWithValue("@telephone", employe.Telephone);
+                    cmd.Parameters.AddWithValue("@prenomContact", employe.PrenomAContacter);
+                    cmd.Parameters.AddWithValue("@lien", employe.LienParente);
+                    cmd.Parameters.AddWithValue("@telephoneContact", employe.TelPersonne);
+                    cmd.Parameters.AddWithValue("@email", employe.Email);
                     cmd.ExecuteNonQuery();
-         
+
                 }
 
 
