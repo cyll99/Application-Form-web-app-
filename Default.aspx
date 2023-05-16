@@ -142,13 +142,13 @@
                         </div>
                     
                     <div class="col-lg-4">
-                            <asp:TextBox ID="TxtDebutFonction" Placeholder="Date d'entree en fonction" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="TxtDebutFonction" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
+                            <asp:TextBox ID="txtDebutFonction" Placeholder="Date d'entree en fonction" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtDebutFonction" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
 
                         </div>  
                                  <div class="col-lg-4">
-                            <asp:TextBox ID="TxtFinFonction" Placeholder="Date fin de fonction" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" ControlToValidate="TxtDebutFonction" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
+                            <asp:TextBox ID="txtFinFonction" Placeholder="Date fin de fonction" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" ControlToValidate="txtFinFonction" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
 
                         </div> 
                     </div>
@@ -179,8 +179,8 @@
             
                     
                     <div class="col-lg-4">
-                            <asp:TextBox ID="textDiscipline" Placeholder="Discipline" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="textDiscipline" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
+                            <asp:TextBox ID="txtDiscipline" Placeholder="Discipline" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="txtDiscipline" ErrorMessage="*Required" ForeColor="Red"></asp:RequiredFieldValidator>
                         </div>
                                  <div class="col-lg-4">
                             <asp:TextBox ID="txtDate" Placeholder="Annee de l'obtention" runat="server" CssClass="form-control" TextMode="DateTime" ValidateRequestMode="Enabled"></asp:TextBox>

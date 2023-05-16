@@ -15,6 +15,8 @@ namespace Etudiant
     {
         DateTime now = DateTime.Now;
         Employes employes;
+        Promotion promotion;
+        ParcoursProf parcours;
         DataTable data;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -40,12 +42,20 @@ namespace Etudiant
             txtDateNaissance.Text = String.Empty;
             txtTelephone.Text = String.Empty;
             txtEmail.Text = String.Empty;
-            //DropSex.SelectedValue = (DropSex.SelectedItem).ToString();
+            DropSex.SelectedIndex = 0;
 
             txtNomContact.Text = String.Empty;
             txtPrenomContact.Text = String.Empty;
             txtTelContact.Text = String.Empty;
-            //DropLien.SelectedValue = (DropLien.SelectedItem).ToString();
+            DropLien.SelectedIndex = 0;
+
+            txtDebutFonction.Text = String.Empty;
+            txtFinFonction.Text = String.Empty;
+            DropDepartement.SelectedIndex = 0;
+
+            txtDate.Text = String.Empty;
+            txtDiscipline.Text = String.Empty;
+            DropPoste.SelectedIndex = 0;
             txtNom.Focus();
 
         }
@@ -75,7 +85,7 @@ namespace Etudiant
         /// <returns></returns>
         public bool IfBoxEmpty()
         {
-            TextBox[] texboxes = { txtNom, txtAdresse, txtDateNaissance,  txtTelephone, txtDateEmbauche, txtEmail, txtNomContact, txtPrenomContact, txtTelContact };
+            TextBox[] texboxes = { txtDebutFonction, txtDate, txtFinFonction, txtDate, txtNom, txtAdresse, txtDateNaissance,  txtTelephone, txtDateEmbauche, txtEmail, txtNomContact, txtPrenomContact, txtTelContact };
             foreach (TextBox textBox in texboxes)
             {
                 if (textBox.Text.Length == 0)
@@ -118,6 +128,14 @@ namespace Etudiant
                 String telContact = txtTelContact.Text.Trim();
                 String lien = DropLien.Text.Trim();
 
+                String debutFonction = txtDebutFonction.Text.Trim();
+                String finFonction = txtFinFonction.Text.Trim();
+                String departement = DropDepartement.Text.Trim();
+                String poste = DropPoste.Text.Trim();
+
+                String discipline = txtDiscipline.Text.Trim();
+                String detention = DropDetention.Text.Trim();
+                String date = txtDate.Text.Trim();
 
                 ////check if the infos provided are valid
                 String[] infos = { nom, prenom1, prenom2, nomContact, prenomContact };
@@ -129,14 +147,45 @@ namespace Etudiant
                         return;
                     }
                 }
-                
+                if (sexe == DropSex.Items[0].Value)
+                {
+                    Label1.Text = $"Veuillez entrer le sexe de {nom} ";
+                    return;
+                }
+                    
+                if (lien == DropLien.Items[0].Value)
+                {
+                    Label1.Text = $"Veuillez entrer le lien entre {nom} et {nomContact} ";
+                    return;
 
-                //int Age = int.Parse(age);
+                }
+                if (poste == DropPoste.Items[0].Value)
+                {
+                    Label1.Text = $"Veuillez entrer le poste occupe par {nom} ";
+                    return;
+                }
+                if (detention == DropDetention.Items[0].Value)
+                {
+                    Label1.Text = $"Veuillez entrer le type de certificat de {nom} ";
+                    return;
+                }
+
 
                 employes = new Employes(nom, prenom1, prenom2, sexe, email, adresse, dateNaissance, dateEmbauche, telephone, nomContact, prenomContact, lien, telContact); //initialization of the class
-                SqliteDataAccess.SavePersonne(employes); // save employes in database
+                string msg = SqliteDataAccess.SavePersonne(employes); // save employes in database
 
-                string prenom = $"{employes.Prenom1} {employes.Prenom2}";
+                if(msg != "")
+                {
+                    if (msg == "constraint failed UNIQUE constraint failed: employes.email")
+                        Label1.Text = "Quelqu' un de l' organisation possede deja cet email";
+                    return;
+                }
+
+                promotion = new Promotion(departement, poste, debutFonction, finFonction);
+                parcours = new ParcoursProf(detention, discipline, date);
+
+                //SqliteDataAccess.SaveParcoursProf(parcours);
+                //SqliteDataAccess.SavePromotion(promotion);
 
                 //data.Rows.Add(new object[] {employes.Nom, prenom, employes.Age, employes.Telephone }); // add a new row to data
                 BindGrid();//bind data

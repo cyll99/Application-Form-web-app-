@@ -267,13 +267,13 @@ namespace Etudiant
         protected global::System.Web.UI.WebControls.DropDownList DropPoste;
 
         /// <summary>
-        /// TxtDebutFonction control.
+        /// txtDebutFonction control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtDebutFonction;
+        protected global::System.Web.UI.WebControls.TextBox txtDebutFonction;
 
         /// <summary>
         /// RequiredFieldValidator3 control.
@@ -285,13 +285,13 @@ namespace Etudiant
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
 
         /// <summary>
-        /// TxtFinFonction control.
+        /// txtFinFonction control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtFinFonction;
+        protected global::System.Web.UI.WebControls.TextBox txtFinFonction;
 
         /// <summary>
         /// RequiredFieldValidator10 control.
@@ -312,13 +312,13 @@ namespace Etudiant
         protected global::System.Web.UI.WebControls.DropDownList DropDetention;
 
         /// <summary>
-        /// textDiscipline control.
+        /// txtDiscipline control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textDiscipline;
+        protected global::System.Web.UI.WebControls.TextBox txtDiscipline;
 
         /// <summary>
         /// RequiredFieldValidator11 control.

@@ -29,6 +29,9 @@ namespace Etudiant
         //static string conn = $"Data Source={dataFilePath};Version=3"; // connection string
         static string conn = $"Data Source=C:\\Users\\cyllx\\Documents\\CRECH.DB; Version=3";
 
+        static long idEmployes;
+
+
         /// <summary>
         /// Create a table in the database
         /// </summary>
@@ -37,12 +40,22 @@ namespace Etudiant
             using (IDbConnection cnn = new SQLiteConnection(conn))
             {
 
+                
                 //var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
-
+                // Creation of table employees
                 var query = "CREATE TABLE IF NOT EXISTS employes( ID INTEGER NOT NULL DEFAULT 1000 UNIQUE, nom TEXT NOT NULL, prenom TEXT NOT NULL, sexe TEXT NOT NULL, dateNaissance TEXT NOT NULL, dateEmbauche  TEXT NOT NULL, nomContact TEXT NOT NULL, prenomContact  TEXT NOT NULL, lien  TEXT NOT NULL, telephone TEXT NOT NULL UNIQUE, telephoneContact  TEXT NOT NULL, adresse   TEXT NOT NULL, email TEXT NOT NULL UNIQUE,PRIMARY KEY( ID AUTOINCREMENT))";
 
-                Console.WriteLine("BASE DE DONNEE"+strExeFilePath);
+                // Creation of table promotion in Crech
+
+                var query2 = "CREATE TABLE IF NOT EXISTS parcours_crech(ID INTEGER NOT NULL, departement TEXT NOT NULL, poste TEXT NOT NULL, debut TEXT NOT NULL, FOREIGN KEY(ID) REFERENCES employes(ID))";
+
+                // Creation of table parcours professionnel
+
+                var query3 = "CREATE TABLE IF NOT EXISTS parcours_prof (ID INTEGER NOT NULL, detention TEXT NOT NULL, discipline TEXT NOT NULL, date TEXT NOT NULL, FOREIGN KEY(ID) REFERENCES employes(ID))";
+                //Console.WriteLine("BASE DE DONNEE"+strExeFilePath);
                 cnn.Execute(query, new DynamicParameters());
+                cnn.Execute(query2 , new DynamicParameters());
+                cnn.Execute(query3 , new DynamicParameters());
             }
         }
         /// <summary>
@@ -85,15 +98,18 @@ namespace Etudiant
         /// Insert employes in database
         /// </summary>
         /// <param name="employe"></param>
-        public static void SavePersonne(Employes employe)
+        public static string SavePersonne(Employes employe)
         {
-            using (SQLiteConnection cnn = new SQLiteConnection(conn))
+            try
             {
-                cnn.Open();
+                using (SQLiteConnection cnn = new SQLiteConnection(conn))
+                {
+                    cnn.Open();
 
-              
-              
-                string sql = @"
+                    // insert into employes and generate a new ID
+
+
+                    string sql = @"
                         insert into employes (nom, prenom, sexe, dateNaissance, dateEmbauche, nomContact, prenomContact, lien, telephone, telephoneContact, adresse, email)
                         Select @nom, @prenom, @sexe, @dateNaissance, @dateEmbauche, @nomContact, @prenomContact, @lien, @telephone, @telephoneContact, @adresse, @email
                         Where not exists (
@@ -113,32 +129,134 @@ namespace Etudiant
                             and adresse = @adresse
                             and email = @email)";
 
-                using ( var cmd = new SQLiteCommand(sql, cnn))
+
+
+
+
+                    using (var cmd = new SQLiteCommand(sql, cnn))
+                    {
+                        string prenom = $"{employe.Prenom1} {employe.Prenom2}";
+                        cmd.Parameters.AddWithValue("@nom", employe.Nom);
+                        cmd.Parameters.AddWithValue("@prenom", prenom);
+                        cmd.Parameters.AddWithValue("@sexe", employe.Sexe);
+                        cmd.Parameters.AddWithValue("@dateNaissance", employe.DateNaissance);
+                        cmd.Parameters.AddWithValue("@adresse", employe.AdresseRue);
+                        cmd.Parameters.AddWithValue("@dateEmbauche", employe.DateEmbauche);
+                        cmd.Parameters.AddWithValue("@nomContact", employe.NomAContacter);
+                        cmd.Parameters.AddWithValue("@telephone", employe.Telephone);
+                        cmd.Parameters.AddWithValue("@prenomContact", employe.PrenomAContacter);
+                        cmd.Parameters.AddWithValue("@lien", employe.LienParente);
+                        cmd.Parameters.AddWithValue("@telephoneContact", employe.TelPersonne);
+                        cmd.Parameters.AddWithValue("@email", employe.Email);
+                        cmd.ExecuteNonQuery();
+
+                        idEmployes = cnn.LastInsertRowId;
+                    }
+                    return "";
+
+                }
+
+            }
+            catch (SQLiteException ex)
+            {
+                return ex.Message;
+            }
+
+        }
+
+
+
+   
+        public static void SavePromotion(Promotion promotion)
+        {
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(conn))
                 {
-                    string prenom = $"{employe.Prenom1} {employe.Prenom2}";
-                    cmd.Parameters.AddWithValue("@nom", employe.Nom);
-                    cmd.Parameters.AddWithValue("@prenom", prenom);
-                    cmd.Parameters.AddWithValue("@sexe", employe.Sexe);
-                    cmd.Parameters.AddWithValue("@dateNaissance", employe.DateNaissance);
-                    cmd.Parameters.AddWithValue("@adresse", employe.AdresseRue);
-                    cmd.Parameters.AddWithValue("@dateEmbauche", employe.DateEmbauche);
-                    cmd.Parameters.AddWithValue("@nomContact", employe.NomAContacter);
-                    cmd.Parameters.AddWithValue("@telephone", employe.Telephone);
-                    cmd.Parameters.AddWithValue("@prenomContact", employe.PrenomAContacter);
-                    cmd.Parameters.AddWithValue("@lien", employe.LienParente);
-                    cmd.Parameters.AddWithValue("@telephoneContact", employe.TelPersonne);
-                    cmd.Parameters.AddWithValue("@email", employe.Email);
-                    cmd.ExecuteNonQuery();
+                    cnn.Open();
+
+
+                    // insert into employes and generate a new ID
+                    string sql_promo = @"
+                        insert into parcours_crech (ID, departement, poste, dateDebut, dateFin)
+                        Select @ID, @departement, @poste, @dateDebut, @dateFin
+                        Where not exists (
+                            select * 
+                            from parcours_crech 
+                            where 
+                                ID = @ID
+                            and departement = @departement
+                            and poste = @poste
+                            and dateDebut = @dateDebut
+                            and dateFin = @dateFin";
+
+
+                    using (var cmd = new SQLiteCommand(sql_promo, cnn))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", idEmployes);
+                        cmd.Parameters.AddWithValue("@departement", promotion.Departement);
+                        cmd.Parameters.AddWithValue("@poste", promotion.Poste);
+                        cmd.Parameters.AddWithValue("@dateDebut", promotion.DateDebut);
+                        cmd.Parameters.AddWithValue("@dateFin", promotion.DateFin);
+
+                        cmd.ExecuteNonQuery();
+
+                    }
+
 
                 }
 
 
             }
+            catch (Exception ex) { 
+                Console.WriteLine(ex.ToString());
+            }
         }
 
 
-        
+        public static void SaveParcoursProf(ParcoursProf parcours)
+        {
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(conn))
+                {
+                    cnn.Open();
 
+
+                    string sql_parcours = @"
+                        insert into parcours_prof (ID, detention, discipline, date)
+                        Select @ID, @detention, @discipline, @date
+                        Where not exists (
+                            select * 
+                            from parcours_prof 
+                            where 
+                                ID = @ID
+                            and detention = @detention
+                            and discipline = @discipline
+                            and date = @date";
+
+
+                    using (var cmd = new SQLiteCommand(sql_parcours, cnn))
+                    {
+                        Console.WriteLine(idEmployes);
+                        cmd.Parameters.AddWithValue("@ID", idEmployes);
+                        cmd.Parameters.AddWithValue("@detention", parcours.Detention);
+                        cmd.Parameters.AddWithValue("@discipline", parcours.Discipline);
+                        cmd.Parameters.AddWithValue("@date", parcours.Date);
+
+                        cmd.ExecuteNonQuery();
+
+                    }
+
+
+                }
+
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
 
     }
 
