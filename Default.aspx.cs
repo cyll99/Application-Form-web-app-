@@ -147,37 +147,41 @@ namespace Etudiant
                         return;
                     }
                 }
-                if (sexe == DropSex.Items[0].Value)
+                if (sexe == "Sexe")
                 {
                     Label1.Text = $"Veuillez entrer le sexe de {nom} ";
                     return;
                 }
-                    
-                if (lien == DropLien.Items[0].Value)
+
+                if (lien == "Lien de parente")
                 {
                     Label1.Text = $"Veuillez entrer le lien entre {nom} et {nomContact} ";
                     return;
 
                 }
-                if (poste == DropPoste.Items[0].Value)
+                if (poste == "Fonction")
                 {
                     Label1.Text = $"Veuillez entrer le poste occupe par {nom} ";
                     return;
                 }
-                if (detention == DropDetention.Items[0].Value)
+                if (detention == "Certificat")
                 {
-                    Label1.Text = $"Veuillez entrer le type de certificat de {nom} ";
+                    Label1.Text = $"Veuillez entrer le type de certificat obtenu par {nom} ";
                     return;
                 }
-
+                if (departement == "Departement")
+                {
+                    Label1.Text = $"Veuillez entrer le departement de {nom} ";
+                    return;
+                }
 
                 employes = new Employes(nom, prenom1, prenom2, sexe, email, adresse, dateNaissance, dateEmbauche, telephone, nomContact, prenomContact, lien, telContact); //initialization of the class
                 string msg = SqliteDataAccess.SavePersonne(employes); // save employes in database
 
                 if(msg != "")
                 {
-                    if (msg == "constraint failed UNIQUE constraint failed: employes.email")
-                        Label1.Text = "Quelqu' un de l' organisation possede deja cet email";
+                    Label1.Text = "Quelqu'un de l'organisation possede deja cet email ou ce numero de telephone";
+                   
                     return;
                 }
 

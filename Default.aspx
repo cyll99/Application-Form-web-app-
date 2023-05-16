@@ -138,6 +138,7 @@
                     <div class="col-lg-4">
                          <asp:DropDownList ID="DropPoste" runat="server" ValidateRequestMode="Enabled"  Placeholder="Lien de parente" TabIndex="1" >
                     <asp:ListItem Selected="True">Fonction</asp:ListItem>
+                    <asp:ListItem >34</asp:ListItem>
                 </asp:DropDownList>
                         </div>
                     

@@ -27,6 +27,7 @@ namespace Etudiant
         static string dataFilePath = System.IO.Path.Combine(strWorkPath, "CRECH.db"); // path database file
 
         //static string conn = $"Data Source={dataFilePath};Version=3"; // connection string
+       
         static string conn = $"Data Source=C:\\Users\\cyllx\\Documents\\CRECH.DB; Version=3";
 
         static long idEmployes;
@@ -43,7 +44,7 @@ namespace Etudiant
                 
                 //var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
                 // Creation of table employees
-                var query = "CREATE TABLE IF NOT EXISTS employes( ID INTEGER NOT NULL DEFAULT 1000 UNIQUE, nom TEXT NOT NULL, prenom TEXT NOT NULL, sexe TEXT NOT NULL, dateNaissance TEXT NOT NULL, dateEmbauche  TEXT NOT NULL, nomContact TEXT NOT NULL, prenomContact  TEXT NOT NULL, lien  TEXT NOT NULL, telephone TEXT NOT NULL UNIQUE, telephoneContact  TEXT NOT NULL, adresse   TEXT NOT NULL, email TEXT NOT NULL UNIQUE,PRIMARY KEY( ID AUTOINCREMENT))";
+                var query = "CREATE TABLE IF NOT EXISTS employes( ID INTEGER NOT NULL DEFAULT 1000 UNIQUE, nom TEXT NOT NULL, prenom TEXT NOT NULL, sexe TEXT NOT NULL, dateNaissance TEXT NOT NULL, dateEmbauche  TEXT NOT NULL, nomContact TEXT NOT NULL, prenomContact  TEXT NOT NULL, lien  TEXT NOT NULL, telephone TEXT NOT NULL UNIQUE, telephoneContact  TEXT NOT NULL, adresse   TEXT NOT NULL, email TEXT NOT NULL UNIQUE,PRIMARY KEY( ID AUTOINCREMENT), UNIQUE(nom,prenom))";
 
                 // Creation of table promotion in Crech
 
