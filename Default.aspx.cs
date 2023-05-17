@@ -186,7 +186,7 @@ namespace Etudiant
 
                 if(msg != "")
                 {
-                    Label1.Text = "Quelqu'un de l'organisation possede deja cet email ou ce numero de telephone";
+                    Label1.Text =msg;
                    
                     return;
                 }

@@ -41,7 +41,7 @@ namespace Etudiant
             using (IDbConnection cnn = new SQLiteConnection(conn))
             {
 
-                //var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
+                var query = "CREATE TABLE employes (ID INTEGER NOT NULL DEFAULT 1000 UNIQUE, nom TEXT NOT NULL, prenom TEXT NOT NULL, sexe TEXT NOT NULL, dateNaissance TEXT NOT NULL, dateEmbauche TEXT NOT NULL, nomContact TEXT NOT NULL, prenomContact TEXT NOT NULL, lien TEXT NOT NULL, telephone TEXT NOT NULL UNIQUE, telephoneContact TEXT NOT NULL, adresse TEXT NOT NULL, email TEXT NOT NULL UNIQUE, UNIQUE(nom, prenom), PRIMARY KEY(ID AUTOINCREMENT))";
 
                 // Creation of table promotion in Crech
 
@@ -134,18 +134,43 @@ namespace Etudiant
                     using (var cmd = new SQLiteCommand(sql, cnn))
                     {
                         string prenom = $"{employe.Prenom1} {employe.Prenom2}";
-                        cmd.Parameters.AddWithValue("@nom", employe.Nom);
-                        cmd.Parameters.AddWithValue("@prenom", prenom);
+                        try
+                        {
+                            cmd.Parameters.AddWithValue("@nom", employe.Nom);
+                            cmd.Parameters.AddWithValue("@prenom", prenom);
+                        }
+                        catch (SQLiteException ex)
+                        {
+                            return "Cette personne existe deja dans la base de donnees";
+                        }
+                    
                         cmd.Parameters.AddWithValue("@sexe", employe.Sexe);
                         cmd.Parameters.AddWithValue("@dateNaissance", employe.DateNaissance);
                         cmd.Parameters.AddWithValue("@adresse", employe.AdresseRue);
                         cmd.Parameters.AddWithValue("@dateEmbauche", employe.DateEmbauche);
                         cmd.Parameters.AddWithValue("@nomContact", employe.NomAContacter);
-                        cmd.Parameters.AddWithValue("@telephone", employe.Telephone);
+                        try
+                        {
+                            cmd.Parameters.AddWithValue("@telephone", employe.Telephone);
+
+                        }
+                        catch (SQLiteException ex)
+                        {
+                            return "Une personne de l'institution possede deja ce numero de telephone";
+                        }
                         cmd.Parameters.AddWithValue("@prenomContact", employe.PrenomAContacter);
                         cmd.Parameters.AddWithValue("@lien", employe.LienParente);
                         cmd.Parameters.AddWithValue("@telephoneContact", employe.TelPersonne);
-                        cmd.Parameters.AddWithValue("@email", employe.Email);
+
+                        try
+                        {
+                            cmd.Parameters.AddWithValue("@email", employe.Email);
+
+                        }
+                        catch (SQLiteException ex)
+                        {
+                            return "Une personne de l'institution possede deja cet email";
+                        }
                         cmd.ExecuteNonQuery();
 
                         idEmployes = cnn.LastInsertRowId;
@@ -157,7 +182,7 @@ namespace Etudiant
             }
             catch (SQLiteException ex)
             {
-                return ex.Message;
+                return "";
             }
 
         }
