@@ -10,7 +10,7 @@ using System.Data;
 /// Christ- Yan Love LAROSE
 /// </summary>
 namespace Etudiant
-{   
+{
     public partial class Default : System.Web.UI.Page
     {
         DateTime now = DateTime.Now;
@@ -26,8 +26,8 @@ namespace Etudiant
 
         }
 
-       
-       
+
+
 
         /// <summary>
         /// Mehode to clear text box
@@ -107,7 +107,7 @@ namespace Etudiant
 
         }
 
-       
+
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
@@ -147,6 +147,11 @@ namespace Etudiant
                         return;
                     }
                 }
+                if (sexe == DropSex.Items[0].Value)
+                {
+                    Label1.Text = $"Veuillez entrer le sexe de {nom} ";
+                    return;
+                }
                 if (sexe == "Sexe")
                 {
                     Label1.Text = $"Veuillez entrer le sexe de {nom} ";
@@ -174,6 +179,7 @@ namespace Etudiant
                     Label1.Text = $"Veuillez entrer le departement de {nom} ";
                     return;
                 }
+
 
                 employes = new Employes(nom, prenom1, prenom2, sexe, email, adresse, dateNaissance, dateEmbauche, telephone, nomContact, prenomContact, lien, telContact); //initialization of the class
                 string msg = SqliteDataAccess.SavePersonne(employes); // save employes in database
@@ -210,10 +216,10 @@ namespace Etudiant
         /// Binding data to gridView
         /// </summary>
         private void BindGrid()
-        {   
+        {
             GridView1.DataSource = data;
             GridView1.DataBind();
-            
+
         }
 
     }

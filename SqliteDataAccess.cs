@@ -41,10 +41,7 @@ namespace Etudiant
             using (IDbConnection cnn = new SQLiteConnection(conn))
             {
 
-                
                 //var query = "CREATE TABLE IF NOT EXISTS infos (nom CHAR(50), prenom TEXT, telephone TEXT,  age INTEGER, nationalite TEXT, pays TEXT, ville TEXT,adresse TEXT,date TEXT)";
-                // Creation of table employees
-                var query = "CREATE TABLE IF NOT EXISTS employes( ID INTEGER NOT NULL DEFAULT 1000 UNIQUE, nom TEXT NOT NULL, prenom TEXT NOT NULL, sexe TEXT NOT NULL, dateNaissance TEXT NOT NULL, dateEmbauche  TEXT NOT NULL, nomContact TEXT NOT NULL, prenomContact  TEXT NOT NULL, lien  TEXT NOT NULL, telephone TEXT NOT NULL UNIQUE, telephoneContact  TEXT NOT NULL, adresse   TEXT NOT NULL, email TEXT NOT NULL UNIQUE,PRIMARY KEY( ID AUTOINCREMENT), UNIQUE(nom,prenom))";
 
                 // Creation of table promotion in Crech
 
@@ -66,7 +63,7 @@ namespace Etudiant
         public static DataTable LoadData()
         {
             DataTable dt;
-            
+
             using (SQLiteConnection cnn = new SQLiteConnection(conn))
             {
 
@@ -82,19 +79,19 @@ namespace Etudiant
                         using (dt = new DataTable())
                         {
                             sda.Fill(dt);
-                            
-                            
+
+
                         }
                     }
                 }
 
-          
+
 
                 return dt;
             }
 
         }
-        
+
         /// <summary>
         /// Insert employes in database
         /// </summary>
